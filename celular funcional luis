@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <string.h>
+
+struct Mensagem {
+    char destinatario[50];
+    char conteudo[200];
+};
+
+struct Ligacao {
+    char destinatario[50];
+    int duracao;
+};
+
+struct Contato {
+    char nome[50];
+    char telefone[15];
+};
+
+int main() {
+    int bateria = 75, creditos = 50;
+    int num_mensagens = 0, num_ligacoes = 0, num_contatos = 0;
+
+    struct Mensagem mensagens[10];
+    struct Ligacao ligacoes[10];
+    struct Contato agenda[10];
+    char operadora[] = "Operadora X";
+
+    while (1) {
+        printf("\n=== MENU ===\n");
+        printf("1. Ver Bateria\n2. Mensagens\n3. Ligações\n4. Fazer Ligação\n5. Agenda\n6. Créditos\n7. Operadora\n8. Sair\nEscolha: ");
+
+        int opcao;
+        scanf("%d", &opcao);
+        getchar(); 
+
+        if (opcao == 1) {
+            printf("Bateria: %d%% (Mais ou menos %d horas)\n", bateria, bateria / 10);
+        } else if (opcao == 2) {
+            if (num_mensagens == 0) {
+                printf("Você não tem nenhuma mensagem :(\n");
+            } else {
+                for (int i = 0; i < num_mensagens; i++) {
+                    printf("Mensagem %d: Para %s, Conteúdo: %s\n", i + 1, mensagens[i].destinatario, mensagens[i].conteudo);
+                }
+            }
+        } else if (opcao == 3) {
+            if (num_ligacoes == 0) {
+                printf("Você ainda não fez nenhuma ligação.\n");
+            } else {
+                for (int i = 0; i < num_ligacoes; i++) {
+                    printf("Ligação %d: Para %s, Durou %d segundos\n", i + 1, ligacoes[i].destinatario, ligacoes[i].duracao);
+                }
+            }
+        } else if (opcao == 4) {
+            if (num_ligacoes < 10) {
+                printf("Digite o nome de quem você quer ligar: ");
+                fgets(ligacoes[num_ligacoes].destinatario, 50, stdin);
+                ligacoes[num_ligacoes].destinatario[strcspn(ligacoes[num_ligacoes].destinatario, "\n")] = 0;
+                ligacoes[num_ligacoes].duracao = 5; // Só pra testar
+                num_ligacoes++;
+                printf("Ligação feita com sucesso!\n");
+            } else {
+                printf("Você já fez muitas ligações hoje! Tente amanhã.\n");
+            }
+        } else if (opcao == 5) {
+            printf("1. Ver contatos\n2. Adicionar contato\nEscolha: ");
+            int escolha_agenda;
+            scanf("%d", &escolha_agenda);
+            getchar();
+
+            if (escolha_agenda == 1) {
+                if (num_contatos == 0) {
+                    printf("Sua agenda está vazia! Adicione um contato primeiro.\n");
+                } else {
+                    for (int i = 0; i < num_contatos; i++) {
+                        printf("Contato %d: Nome: %s, Telefone: %s\n", i + 1, agenda[i].nome, agenda[i].telefone);
+                    }
+                }
+            } else if (escolha_agenda == 2) {
+                if (num_contatos < 10) {
+                    printf("Digite o nome do contato: ");
+                    fgets(agenda[num_contatos].nome, 50, stdin);
+                    agenda[num_contatos].nome[strcspn(agenda[num_contatos].nome, "\n")] = 0;
+                    printf("Digite o telefone: ");
+                    fgets(agenda[num_contatos].telefone, 15, stdin);
+                    agenda[num_contatos].telefone[strcspn(agenda[num_contatos].telefone, "\n")] = 0;
+                    num_contatos++;
+                    printf("Contato adicionado com sucesso!\n");
+                } else {
+                    printf("Sua agenda está cheia! Exclua alguém para adicionar mais.\n");
+                }
+            }
+        } else if (opcao == 6) {
+            printf("Você tem %d créditos no celular.\n", creditos);
+        } else if (opcao == 7) {
+            printf("Você usa a %s.\n", operadora);
+        } else if (opcao == 8) {
+            printf("Tchau! Até a próxima.\n");
+            break;
+        } else {
+            printf("Opção inválida. Tente de novo.\n");
+        }
+        printf("Pressione ENTER para continuar...");
+        getchar();
+    }
+
+    return 0;
+}
